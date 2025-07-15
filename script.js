@@ -77,7 +77,7 @@ function animate() {
 
   ctx.restore();
 
-  if (frame < regions.length) frame++5;
+  if (frame < regions.length) frame += 5;
   angle += 0.003;
 
   requestAnimationFrame(animate);
