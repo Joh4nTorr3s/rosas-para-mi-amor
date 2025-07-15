@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+canvas {
+  transform-origin: center center;
+}
+
+audio {
+  margin-top: 20px;
+}
