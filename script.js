@@ -68,8 +68,10 @@ function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.scale(1, -1); // ← Voltea en eje Y
   ctx.rotate(angle);
   ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
 
   for (let i = 0; i < frame && i < regions.length; i++) {
     drawRegion(regions[i]);
