@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let angle = Math.pi;
+let angle = 0;
 let frame = 0;
 let regions = [];
 let scale = 1;
@@ -49,7 +49,8 @@ function drawRegion(region) {
 
   region.contour.forEach((point, index) => {
     let x = (point[0] - offsetX) * scale + canvas.width / 2;
-    let y = (offsetY - point[1]) * scale + canvas.height / 2;
+    let y = (point[1] - offsetY) * scale + canvas.height / 2;
+
 
     if (index === 0) {
       ctx.moveTo(x, y);
@@ -68,9 +69,9 @@ function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.scale(1, -1); // ← Voltea en eje Y
   ctx.rotate(angle);
   ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
 
 
   for (let i = 0; i < frame && i < regions.length; i++) {
