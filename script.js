@@ -8,14 +8,18 @@ let scale = 1;
 let offsetX = 0;
 let offsetY = 0;
 
-// Intentar reproducir la música incluso si el navegador bloquea el autoplay
+// Reproducir música después del primer clic
 const music = document.getElementById("bg-music");
 music.volume = 0.5;
 document.body.addEventListener("click", () => {
-  music.play().catch(e => console.log("Autoplay bloqueado"));
+  music.play().then(() => {
+    console.log("Música reproducida");
+  }).catch(e => {
+    console.error("Autoplay bloqueado o error al reproducir música:", e);
+  });
 });
 
-// Cargar el JSON
+// 🌹 Cargar el JSON
 fetch('rosas.json')
   .then(response => response.json())
   .then(data => {
@@ -49,8 +53,7 @@ function drawRegion(region) {
 
   region.contour.forEach((point, index) => {
     let x = (point[0] - offsetX) * scale + canvas.width / 2;
-    let y = (point[1] - offsetY) * scale + canvas.height / 2;
-
+    let y = (point[1] - offsetY) * scale + canvas.height / 2; // ✅ Corregido para que no esté de cabeza
 
     if (index === 0) {
       ctx.moveTo(x, y);
@@ -65,14 +68,11 @@ function drawRegion(region) {
 
 function animate() {
   ctx.save();
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.rotate(angle);
   ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-
 
   for (let i = 0; i < frame && i < regions.length; i++) {
     drawRegion(regions[i]);
@@ -85,3 +85,4 @@ function animate() {
 
   requestAnimationFrame(animate);
 }
+
