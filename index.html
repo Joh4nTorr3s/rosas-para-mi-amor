@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rosas con Música</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="Los Panchos - Piel Canela.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio HTML5.
+    </audio>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        fetch('rosas.json')
+            .then(response => response.json())
+            .then(regions => {
+                const allPoints = regions.flatMap(r => r.contour);
+                const minX = Math.min(...allPoints.map(p => p[0]));
+                const maxX = Math.max(...allPoints.map(p => p[0]));
+                const minY = Math.min(...allPoints.map(p => p[1]));
+                const maxY = Math.max(...allPoints.map(p => p[1]));
+
+                const width = maxX - minX;
+                const height = maxY - minY;
+                const scale = Math.min(600 / width, 600 / height);
+                const centerX = (minX + maxX) / 2;
+                const centerY = (minY + maxY) / 2;
+
+                regions.forEach(region => {
+                    const [r, g, b] = region.color.map(c => Math.min(255, Math.floor(c)));
+                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                    ctx.beginPath();
+                    region.contour.forEach(([x, y], i) => {
+                        const px = (x - centerX) * scale + canvas.width / 2;
+                        const py = (centerY - y) * scale + canvas.height / 2;
+                        if (i === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    });
+                    ctx.closePath();
+                    ctx.fill();
+                });
+            });
+    </script>
+</body>
+</html>
