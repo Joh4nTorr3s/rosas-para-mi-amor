@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let angle = 0;
+let angle = Math.pi;
 let frame = 0;
 let regions = [];
 let scale = 1;
